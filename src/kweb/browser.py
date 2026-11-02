@@ -3,6 +3,7 @@ from pathlib import Path
 from fastapi import Depends, FastAPI
 from fastapi.staticfiles import StaticFiles
 from pydantic import ValidationError
+from starlette.routing import WebSocketRoute
 
 from . import config
 from .api.browser import router as browser_router
@@ -46,7 +47,7 @@ def get_app(fileslocation: Path | str | None = None, editable: bool = False) -> 
     ):
         pass
 
-    app.add_websocket_route("/ws", BrowserLayoutViewServerEndpoint)
+    app.router.routes.append(WebSocketRoute("/ws", BrowserLayoutViewServerEndpoint))
     viewer_router.dependencies.insert(0, Depends(settings))
     app.include_router(viewer_router)
     app.include_router(browser_router)

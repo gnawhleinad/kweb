@@ -12,94 +12,31 @@ classifiers = [
   "Operating System :: OS Independent"
 ]
 dependencies = [
-  "klayout >= 0.29.4",
-  "fastapi",
-  "uvicorn[standard]",
-  "jinja2",
-  "pydantic_extra_types>=2.6.0"
+  "klayout>=0.29.4",
+  "fastapi>=0.162.0",
+  "uvicorn[standard]>=0.54.0",
+  "jinja2>=3.1.6",
+  "pydantic-settings>=2.16.2",
 ]
 description = "KLayout API implementation of gdsfactory"
 name = "kweb"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.14"
 version = "2.0.4"
 
-[project.optional-dependencies]
+[tool.ruff]
+respect-gitignore = true
+
+[tool.ty.environment]
+root = ["./"]
+
+[dependency-groups]
 dev = [
-  "mypy",
-  "pre-commit",
-  "gitpython",
-  "pylsp-mypy",
-  "types-cachetools",
-  "towncrier",
-  "tbump"
+  "ruff>=0.17.1",
+  "ty>=0.0.90",
+  "pytest>=9.2.0",
+  "pytest-cov>=7.1.0",
 ]
-docs = [
-  "sphinx",
-  "docutils==0.21.2",
-  "sphinx_rtd_theme",
-  "sphinxcontrib-video",
-  "sphinx-autodoc-typehints",
-  "sphinx-book-theme==1.1.4",
-  "sphinx-click",
-  "sphinx-copybutton",
-  "sphinx-markdown-tables==0.0.17",
-  "myst-parser",
-  "matplotlib",
-  "nbsphinx",
-  "autodoc_pydantic"
-]
-ipy = [
-  "ipython",
-  "ipywidgets",
-  "ipyevents"
-]
-tests = ["pytest", "pytest-cov"]
-
-[tool.black]
-exclude = '''  # Specify the files/dirs that should be ignored by the black formatter
-/(
-    \.eggs
-  | \.git
-  | \.hg
-  | \.mypy_cache
-  | \.tox
-  | \.venv
-  | env
-  | _build
-  | buck-out
-  | build
-  | dist
-)/
-'''
-include = '\.pyi?$'
-line-length = 88  # Specify the line length
-target-version = ['py310']  # Specify your Python version
-
-[tool.djlint]
-extension = "html"
-format_css = true
-ignore = "H021,H006,H013"
-
-[tool.isort]
-include_trailing_comma = true
-line_length = 88
-multi_line_output = 3
-skip = ["kweb/__init__.py"]
-
-[tool.mypy]
-plugins = "pydantic.mypy, numpy.typing.mypy_plugin"
-python_version = "3.10"
-strict = true
-
-[[tool.mypy.overrides]]
-implicit_reexport = true
-module = "kweb"
-
-[tool.pylsp-mypy]
-enabled = true
-live_mode = true
-strict = true
 
 [tool.pytest.ini_options]
 # addopts = --tb=no
@@ -107,36 +44,3 @@ addopts = '--tb=short'
 norecursedirs = ["extra/*.py"]
 python_files = ["src/*.py", "tests/*.py"]
 testpaths = ["tests"]
-
-[tool.setuptools.packages.find]
-where = ["src"]
-
-[tool.tbump]
-
-[[tool.tbump.file]]
-src = "README.md"
-
-[[tool.tbump.file]]
-search = 'version = "{current_version}"'
-src = "pyproject.toml"
-
-[[tool.tbump.file]]
-search = '__version__ = "{current_version}"'
-src = "src/kweb/__init__.py"
-
-[tool.tbump.git]
-message_template = "Bump to {new_version}"
-tag_template = "v{new_version}"
-
-[tool.tbump.version]
-current = "2.0.4"
-# Example of a semver regexp.
-# Make sure this matches current_version before
-# using tbump
-regex = '''
-  (?P<major>\d+)
-  \.
-  (?P<minor>\d+)
-  \.
-  (?P<patch>\d+)
-  '''

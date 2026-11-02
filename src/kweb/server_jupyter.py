@@ -7,11 +7,8 @@ import uvicorn
 
 from kweb.default import app
 
-global jupyter_server
 jupyter_server = None
-global host
 host = None
-global port
 port = None
 
 
@@ -50,7 +47,6 @@ def _run() -> None:
 
 
 def _server_is_running() -> bool:
-    global jupyter_server
     return False if jupyter_server is None else jupyter_server.started
 
 

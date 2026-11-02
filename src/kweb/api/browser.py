@@ -20,14 +20,17 @@ templates = Jinja2Templates(
 async def file_browser(
     request: Request,
 ) -> _TemplateResponse:
-    settings: Config = router.dependencies[0].dependency()  # type: ignore[misc]
+    dependency = router.dependencies[0].dependency
+    assert dependency is not None
+    settings: Config = dependency()
+
     files = chain(
         settings.fileslocation.glob("**/*.gds"), settings.fileslocation.glob("**/*.oas")
     )
     return templates.TemplateResponse(
+        request,
         "browser.html",
         {
-            "request": request,
             "folder_files": [
                 file.relative_to(settings.fileslocation) for file in files
             ],

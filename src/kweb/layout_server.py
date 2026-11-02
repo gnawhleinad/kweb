@@ -3,26 +3,24 @@ from __future__ import annotations
 import asyncio
 import base64
 import json
-from collections.abc import Callable
 from collections import defaultdict
+from collections.abc import Callable, Iterator
 from pathlib import Path
-from typing import Any, TypeAlias, Literal
+from typing import Any, Literal
 from urllib.parse import parse_qs
 
-# NOTE: import db to enable stream format readers
-import klayout.db as db
-import klayout.lay as lay
-import klayout.rdb as rdb
 from fastapi import WebSocket
-from starlette.endpoints import WebSocketEndpoint
-from typing import Iterator
+
+# NOTE: import db to enable stream format readers
+from klayout import db, lay, rdb
 from pydantic import BaseModel, Field
 from pydantic_extra_types.color import Color
+from starlette.endpoints import WebSocketEndpoint
 
 port = 8765
 host = "localhost"
 
-CellDict: TypeAlias = "dict[str, int | str | list[CellDict]]"
+type CellDict = "dict[str, int | str | list[CellDict]]"
 
 
 class MarkerCategory(BaseModel):

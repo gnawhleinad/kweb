@@ -9,6 +9,7 @@ from pydantic import BaseModel
 from starlette.templating import _TemplateResponse
 
 from .. import __version__ as version
+from ..config import Config
 
 router = APIRouter()
 templates = Jinja2Templates(
@@ -27,7 +28,10 @@ class FileView(BaseModel):
 async def file_view_static(
     request: Request, params: Annotated[FileView, Depends()]
 ) -> _TemplateResponse:
-    settings = router.dependencies[0].dependency()  # type: ignore[misc]
+    dependency = router.dependencies[0].dependency
+    assert dependency is not None
+    settings: Config = dependency()
+
     _file = settings.fileslocation / f"{params.file}"
 
     exists = _file.is_file() and _file.stat().st_mode
@@ -65,13 +69,13 @@ async def show_file(request: Request, layout_params: FileView) -> _TemplateRespo
         url = ws_scheme + (request.url.hostname or "localhost") + root_path
 
     template_params = {
-        "request": request,
         "url": url,
     }
 
     template_params["params"] = layout_params.model_dump(mode="json", exclude_none=True)
 
     return templates.TemplateResponse(
+        request,
         "viewer.html",
         template_params,
     )

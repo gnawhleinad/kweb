@@ -1,0 +1,21 @@
+[env]
+_.file = ".env.toml"
+_.python.venv = { path = ".venv", create = true }
+
+[settings]
+experimental = true
+idiomatic_version_file_enable_tools = ["python"]
+
+[tools]
+uv = "0.12.23"
+
+[tasks.check]
+run = [
+        "uv run --all-extras ty check",
+]
+
+[tasks.format]
+run = [
+        "uv run ruff check --fix",
+        "uv run ruff format",
+]
