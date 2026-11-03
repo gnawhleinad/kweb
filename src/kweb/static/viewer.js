@@ -851,4 +851,7 @@ window.addEventListener("keydown", function(evt) {
     evt.preventDefault();
     sendKeyEvent(canvas, "keydown", evt);
   }
+  else if (evt.key === "f") {
+    socket.send(JSON.stringify({ msg: "zoom-f" }));
+  }
 });
