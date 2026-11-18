@@ -25,7 +25,8 @@ async def file_browser(
     settings: Config = dependency()
 
     files = chain(
-        settings.fileslocation.glob("**/*.gds"), settings.fileslocation.glob("**/*.oas")
+        settings.fileslocation.glob("**/*.gds", recurse_symlinks=True),
+        settings.fileslocation.glob("**/*.oas", recurse_symlinks=True),
     )
     return templates.TemplateResponse(
         request,
