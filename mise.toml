@@ -1,6 +1,7 @@
 [env]
 _.file = ".env.toml"
 _.python.venv = { path = ".venv", create = true }
+KWEB_FILESLOCATION = "./files"
 
 [settings]
 experimental = true
@@ -18,4 +19,9 @@ run = [
 run = [
         "uv run ruff check --fix",
         "uv run ruff format",
+]
+
+[tasks.start]
+run = [
+        "cd src/kweb; uv run uvicorn --reload default:app",
 ]
