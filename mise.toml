@@ -1,7 +1,7 @@
 [env]
 _.file = ".env.toml"
 _.python.venv = { path = ".venv", create = true }
-KWEB_FILESLOCATION = "./files"
+KWEB_FILESLOCATION = "../../files"
 
 [settings]
 experimental = true
